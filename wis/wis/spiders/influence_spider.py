@@ -23,33 +23,28 @@ class InfluenceSpider(CrawlSpider):
     def parse_thinker(self, response):
 
         name = response.xpath('//h1/text()').get()
-        link = urllib2.open(anchor, None, 1).geturl()
+        link = response.request.url
 
-        if link not in processed:
-            # do this first to avoid redundancy
-            processed.append(link)
+        processed.append(link)
 
-            # main process
-            thinker = Thinker()
+        # main process
+        thinker = Thinker()
 
-            thinker['name'] = name
-            thinker['link'] = link
-            thinker['influences'] = []
-            thinker['influenced'] = []
+        thinker['name'] = name
+        thinker['link'] = link
+        thinker['influences'] = []
+        thinker['influenced'] = []
 
-            # add influences
-            for t in response.xpath('//*[text()="Influences"]/following-sibling::ul//a'):
-                name = t.re(r'title="(.*)"')
-                thinker['influences'].append(name)
+        # add influences
+        for t in response.xpath('//*[text()="Influences"]/following-sibling::ul//a'):
+            name = t.re(r'title="(.*)"')
+            thinker['influences'].append(name[0])
 
-            # add influenced
-            for t in response.xpath('//*[text()="Influenced"]/following-sibling::ul//a'):
-                name = t.re(r'title="(.*)"')
-                thinker['influenced'].append(name)
+        # add influenced
+        for t in response.xpath('//*[text()="Influenced"]/following-sibling::ul//a'):
+            name = t.re(r'title="(.*)"')
+            thinker['influenced'].append(name[0])
 
-            # update thinker list
-            thinkers.append(thinker)
-            return thinker
-        else:
-            print(link + ' already processed!!')
-            return
+        # update thinker list
+        thinkers.append(thinker)
+        return thinker
