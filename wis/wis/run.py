@@ -22,4 +22,4 @@ def do_craw(url):
 
 
 do_craw('https://en.wikipedia.org/wiki/Gilles_Deleuze')
-nx.write_adjlist(g.full_graph, 'graph.txt')
+nx.write_gml(g.full_graph, 'graph.gml')

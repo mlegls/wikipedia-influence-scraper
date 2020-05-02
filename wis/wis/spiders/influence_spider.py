@@ -15,7 +15,7 @@ class InfluenceSpider(CrawlSpider):
     allowed_domains = ['en.wikipedia.org']
 
     rules = (
-        Rule(LinkExtractor(allow=rf'(?!{"|".join(g.processed)})',  # prevents returning to already-processed urls
+        Rule(LinkExtractor(allow=rf'(?!{"|".join(g.processed)})',  # reduces returning to already-processed urls
                            restrict_xpaths=['//*[text()="Influences"]/following-sibling::ul//a[@title]',
                                             '//*[text()="Influenced"]/following-sibling::ul//a[@title]']),
              callback="parse_thinker",
@@ -23,53 +23,49 @@ class InfluenceSpider(CrawlSpider):
     )
 
     def parse_start_url(self, response):
+        g.thinkers = []
+        g.processed = ['filler']
         return self.parse_thinker(response)
 
     def parse_thinker(self, response):
         link = response.request.url
-        g.processed.append(link)
 
         # regex removes parentheticals like '(philosopher)'
-        this_name = response.xpath('//h1/text()').re(r'^(?:(?! \().)*')[0]
+        name = response.xpath('//h1/text()').re(r'^(?:(?! \().)*')[0]
 
         # main process
-        thinker = Thinker()
+        if link in g.processed:
+            print('Already been ' + str(g.processed))
+            return
+        else:
+            g.processed.append(link)
 
-        thinker['name'] = this_name
-        thinker['link'] = link
-        thinker['influences'] = []
-        thinker['influenced'] = []
+            thinker = Thinker()
 
-        g.full_graph.add_node(this_name)
+            thinker['name'] = name
+            thinker['link'] = link
+            thinker['influences'] = []
+            thinker['influenced'] = []
 
-        # add influences
-        for t in response.xpath('//*[text()="Influences"]/following-sibling::ul//a') \
-                 + response.xpath('//*[text()="Influences"]/following-sibling::td//a'):
-            name = t.re(r'title="(.*)"')
-            if name:
-                next_name = re.match(r'^(?:(?! \().)*', name[0])  # regex removes parentheticals like '(philosopher)'
-                thinker['influences'].append(name[0])
+            g.full_graph.add_node(name)
+
+            # add influences; ul = collapsible, td = non-collapsible
+            # r'^(?:(?! \().)*' removes parentheticals like '(philosopher)' or '(no page)'
+            for t in response.xpath('//*[text()="Influences"]/following-sibling::ul//a/@title').re(r'^(?:(?! \().)*') \
+                     + response.xpath('//*[text()="Influences"]/following-sibling::td//a/@title').re(r'^(?:(?! \().)*'):
+                # for scrapy Thinker object
+                thinker['influences'].append(t)
                 # edge from influences to this
-                g.full_graph.add_edge(next_name, this_name)
+                g.full_graph.add_edge(t, name)
 
-        for t in response.xpath('//*[text()="Influences"]/following-sibling::td//a'):
-            name = t.re(r'title="(.*)"')
-            if name:
-                next_name = re.match(r'^(?:(?! \().)*', name[0])  # regex removes parentheticals like '(philosopher)'
-                thinker['influences'].append(name[0])
-                # edge from influences to this
-                g.full_graph.add_edge(next_name, this_name)
-
-        # add influenced
-        for t in response.xpath('//*[text()="Influenced"]/following-sibling::ul//a') \
-                 + response.xpath('//*[text()="Influenced"]/following-sibling::td//a'):
-            name = t.re(r'title="(.*)"')
-            if name:
-                next_name = re.match(r'^(?:(?! \().)*', name[0])  # regex removes parentheticals like '(philosopher)'
-                thinker['influenced'].append(name[0])
+            # add influenced
+            for t in response.xpath('//*[text()="Influenced"]/following-sibling::ul//a/@title').re(r'^(?:(?! \().)*') \
+                     + response.xpath('//*[text()="Influenced"]/following-sibling::td//a/@title').re(r'^(?:(?! \().)*'):
+                # for scrapy Thinker object
+                thinker['influenced'].append(t)
                 # edge from this to influenced
-                g.full_graph.add_edge(this_name, next_name)
+                g.full_graph.add_edge(name, t)
 
-        # update thinker list
-        g.thinkers.append(thinker)
-        return thinker
+            # update thinker list
+            g.thinkers.append(thinker)
+            return thinker
