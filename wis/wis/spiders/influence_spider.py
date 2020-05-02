@@ -55,16 +55,16 @@ class InfluenceSpider(CrawlSpider):
                      + response.xpath('//*[text()="Influences"]/following-sibling::td//a/@title').re(r'^(?:(?! \().)*'):
                 # for scrapy Thinker object
                 thinker['influences'].append(t)
-                # edge from influences to this
-                g.full_graph.add_edge(t, name)
+                # edge from this to influenced (like referral)
+                g.full_graph.add_edge(name, t)
 
             # add influenced
             for t in response.xpath('//*[text()="Influenced"]/following-sibling::ul//a/@title').re(r'^(?:(?! \().)*') \
                      + response.xpath('//*[text()="Influenced"]/following-sibling::td//a/@title').re(r'^(?:(?! \().)*'):
                 # for scrapy Thinker object
                 thinker['influenced'].append(t)
-                # edge from this to influenced
-                g.full_graph.add_edge(name, t)
+                # edge from influenced to this (like referral)
+                g.full_graph.add_edge(t, name)
 
             # update thinker list
             g.thinkers.append(thinker)
