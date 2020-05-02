@@ -26,12 +26,11 @@ class InfluenceSpider(CrawlSpider):
         return self.parse_thinker(response)
 
     def parse_thinker(self, response):
+        link = response.request.url
+        g.processed.append(link)
 
         # regex removes parentheticals like '(philosopher)'
         this_name = response.xpath('//h1/text()').re(r'^(?:(?! \().)*')[0]
-        link = response.request.url
-
-        g.processed.append(link)
 
         # main process
         thinker = Thinker()
@@ -44,7 +43,16 @@ class InfluenceSpider(CrawlSpider):
         g.full_graph.add_node(this_name)
 
         # add influences
-        for t in response.xpath('//*[text()="Influences"]/following-sibling::ul//a'):
+        for t in response.xpath('//*[text()="Influences"]/following-sibling::ul//a') \
+                 + response.xpath('//*[text()="Influences"]/following-sibling::td//a'):
+            name = t.re(r'title="(.*)"')
+            if name:
+                next_name = re.match(r'^(?:(?! \().)*', name[0])  # regex removes parentheticals like '(philosopher)'
+                thinker['influences'].append(name[0])
+                # edge from influences to this
+                g.full_graph.add_edge(next_name, this_name)
+
+        for t in response.xpath('//*[text()="Influences"]/following-sibling::td//a'):
             name = t.re(r'title="(.*)"')
             if name:
                 next_name = re.match(r'^(?:(?! \().)*', name[0])  # regex removes parentheticals like '(philosopher)'
@@ -53,7 +61,8 @@ class InfluenceSpider(CrawlSpider):
                 g.full_graph.add_edge(next_name, this_name)
 
         # add influenced
-        for t in response.xpath('//*[text()="Influenced"]/following-sibling::ul//a'):
+        for t in response.xpath('//*[text()="Influenced"]/following-sibling::ul//a') \
+                 + response.xpath('//*[text()="Influenced"]/following-sibling::td//a'):
             name = t.re(r'title="(.*)"')
             if name:
                 next_name = re.match(r'^(?:(?! \().)*', name[0])  # regex removes parentheticals like '(philosopher)'

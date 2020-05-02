@@ -1,7 +1,11 @@
 """executable script"""
 
+import wis.wis.globfile as g
 from wis.wis.spiders.influence_spider import InfluenceSpider
 from scrapy.crawler import CrawlerProcess
+
+import networkx as nx
+
 
 
 def do_craw(url):
@@ -18,3 +22,4 @@ def do_craw(url):
 
 
 do_craw('https://en.wikipedia.org/wiki/Gilles_Deleuze')
+nx.write_adjlist(g.full_graph, 'graph.txt')
