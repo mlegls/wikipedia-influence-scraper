@@ -1,3 +1,5 @@
+"""main spider; logic is in here"""
+
 import re
 
 from scrapy.spiders import CrawlSpider, Rule

@@ -1,4 +1,4 @@
-"""networkx stuff, including UI"""
+"""executable script"""
 
 from wis.wis.spiders.influence_spider import InfluenceSpider
 from scrapy.crawler import CrawlerProcess

@@ -9,6 +9,7 @@ from scrapy import Item, Field
 
 
 # core thinker object
+"""thinker item; represents one Wikipedia page, unless no page"""
 class Thinker(Item):
     name = Field()
     link = Field()
