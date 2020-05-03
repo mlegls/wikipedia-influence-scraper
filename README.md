@@ -6,7 +6,7 @@ Everything is build on scrapy. The main robot is at [wis/wis/spiders/influence_s
 
 [graph.gml](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/wis/wis/graph.gml) and [thinkers.json](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/wis/wis/thinkers.json) were scraped starting from [Deleuze](https://en.wikipedia.org/wiki/Gilles_Deleuze). They may comprehensively span all Wikipedia pages with or directed to from "**Influences**" and "**Influenced**" infobox section links, but I'm not sure.
 
-![image-20200502232538793](/home/mlegl/.config/Typora/typora-user-images/image-20200502232538793.png)
+![image-20200502232514106](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502232514106.png)
 
 ## How to Use (Gephi)
 
@@ -18,9 +18,9 @@ The easiest way to see cool stuff is by importing [graph.gml](https://github.com
 
 **1** 
 
-First open graph.gml (from "Open Graph File..." or File>Open) in Gephi, and select Graph Type "Directed". Hit OK.![image-20200502214316419](/home/mlegl/.config/Typora/typora-user-images/image-20200502214316419.png)
+First open graph.gml (from "Open Graph File..." or File>Open) in Gephi, and select Graph Type "Directed". Hit OK.
 
-
+![image-20200502214316419](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502214316419.png)
 
 Everything will initially be all clustered together in an illegible square. To make things prettier, first use the "ForceAtlas 2" Layout with as many threads as possible, and tinker around with the settings. Play around with the other layouts too to get different-looking graphs.
 
@@ -28,27 +28,27 @@ Everything will initially be all clustered together in an illegible square. To m
 
 At this point, if you haven't already, turn labels on from the bottom menu. Also run the "Label Adjust" Layout so they don't overlap.
 
-![image-20200502224532107](/home/mlegl/.config/Typora/typora-user-images/image-20200502224532107.png)
+![image-20200502224532107](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502224532107.png)
 
 **2**
 
 Run some tests from the right menu. "HITS", "Modularity", and "PageRank" are fun ones.
 
-![image-20200502224742193](/home/mlegl/.config/Typora/typora-user-images/image-20200502224742193.png)
+![image-20200502224742193](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502224742193.png)
 
 You can visualize data (from your tests) from the top left menu. Factors are color, size, font color, and font size. Choose the factor from the top four icons, then Nodes>Ranking, and select the measure you want to visualize.
 
-![image-20200502225548250](/home/mlegl/.config/Typora/typora-user-images/image-20200502225548250.png)
+![image-20200502225548250](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502225548250.png)
 
-![image-20200502225921942](/home/mlegl/.config/Typora/typora-user-images/image-20200502225921942.png)
+![image-20200502225921942](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502225921942.png)
 
-![image-20200502230017622](/home/mlegl/.config/Typora/typora-user-images/image-20200502230017622.png)
+![image-20200502230017622](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502230017622.png)
 
-![image-20200502230039423](/home/mlegl/.config/Typora/typora-user-images/image-20200502230039423.png)
+![image-20200502230039423](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502230039423.png)
 
 You can run "Label Adjust" again if they start overlapping.
 
-![image-20200502230205781](/home/mlegl/.config/Typora/typora-user-images/image-20200502230205781.png)
+![image-20200502230205781](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502230205781.png)
 
 **3**
 
@@ -72,8 +72,6 @@ Also note that not all nodes (including Scrapy items) are actual people. There a
 
 You can edit the python files directly and execute run.py, but you can also import run.py in a Python terminal, and the spider will run automatically (it'll take a while). Also import [globfile.py](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/wis/wis/globfile.py), and you can play around with the global data structures directly. globfile.thinkers will be a list of all "Thinker" class Scrapy items (as defined in items.py), and globfile.full_graph is the complete NetworkX graph.
 
- 
-
 ## Contributing
 
 ### Web App
@@ -90,7 +88,7 @@ I'm not sure how comprehensive the Deleuze graph is. It could already span all W
 
  Also, the scraper supports two types of infoboxes. The most common collapsible one, like for [Gilles Deleuze](https://en.wikipedia.org/wiki/Gilles_Deleuze) (shown above), and an alternate non-collapsible one, like for [Gregory Bateson](https://en.wikipedia.org/wiki/Gregory_Bateson).
 
-![image-20200502235319838](/home/mlegl/.config/Typora/typora-user-images/image-20200502235319838.png)
+![image-20200502235319838](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502235319838.png)
 
 I'm not sure if there are other infobox formats that are not being scraped. If there are, please let me know or make the changes yourself in spiders/influence_spider.py (add conditions after lines 55 and 63), and submit a pull request.
 
@@ -103,4 +101,3 @@ For changes that alter the output files, please keep the original graph.gml and 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
