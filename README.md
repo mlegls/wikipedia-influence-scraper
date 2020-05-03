@@ -6,7 +6,7 @@ Everything is build on scrapy. The main robot is at [wis/wis/spiders/influence_s
 
 [graph.gml](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/wis/wis/graph.gml) and [thinkers.json](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/wis/wis/thinkers.json) were scraped starting from [Deleuze](https://en.wikipedia.org/wiki/Gilles_Deleuze). They may comprehensively span all Wikipedia pages with or directed to from "**Influences**" and "**Influenced**" infobox section links, but I'm not sure.
 
-![image-20200502232538793](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502232538793.png)
+![image-20200502232514106](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502232514106.png)
 
 ## How to Use (Gephi)
 
@@ -18,9 +18,9 @@ The easiest way to see cool stuff is by importing [graph.gml](https://github.com
 
 **1** 
 
-First open graph.gml (from "Open Graph File..." or File>Open) in Gephi, and select Graph Type "Directed". Hit OK.![image-20200502214316419](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502214316419.png)
+First open graph.gml (from "Open Graph File..." or File>Open) in Gephi, and select Graph Type "Directed". Hit OK.
 
-
+![image-20200502214316419](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/readme-images/image-20200502214316419.png)
 
 Everything will initially be all clustered together in an illegible square. To make things prettier, first use the "ForceAtlas 2" Layout with as many threads as possible, and tinker around with the settings. Play around with the other layouts too to get different-looking graphs.
 
@@ -72,8 +72,6 @@ Also note that not all nodes (including Scrapy items) are actual people. There a
 
 You can edit the python files directly and execute run.py, but you can also import run.py in a Python terminal, and the spider will run automatically (it'll take a while). Also import [globfile.py](https://github.com/mlegls/wikipedia-influence-scraper/blob/master/wis/wis/globfile.py), and you can play around with the global data structures directly. globfile.thinkers will be a list of all "Thinker" class Scrapy items (as defined in items.py), and globfile.full_graph is the complete NetworkX graph.
 
- 
-
 ## Contributing
 
 ### Web App
@@ -103,4 +101,3 @@ For changes that alter the output files, please keep the original graph.gml and 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
