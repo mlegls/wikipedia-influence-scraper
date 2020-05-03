@@ -40,7 +40,7 @@ You can visualize data (from your tests) from the top left menu. Factors are col
 
 ![image-20200502225548250](/home/mlegl/.config/Typora/typora-user-images/image-20200502225548250.png)
 
-## ![image-20200502225921942](/home/mlegl/.config/Typora/typora-user-images/image-20200502225921942.png)
+![image-20200502225921942](/home/mlegl/.config/Typora/typora-user-images/image-20200502225921942.png)
 
 ![image-20200502230017622](/home/mlegl/.config/Typora/typora-user-images/image-20200502230017622.png)
 
